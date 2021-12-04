@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -29,15 +29,101 @@
                     var pass = document.getElementById("password").value;
                     var email = document.getElementById("email").value;
 
-                    if (CheckLogin(email, pass)) {
-
+                    if (ValidateLogin(email, pass)) {
+                        window.location.replace("#play");
                     }
                 }
 
-                function CheckLogin(email, password) {//returns true if login fits
-                    console.log("Still needs to be implemented idk how to do it");
-                    return true;
+                function ValidateLogin(email, password) //checks for empty and also valid password characters
+                {
+                    if (password == "" || email == "") {
+                        document.getElementById("txtHintLogin").innerHTML = "Please enter your password or email.";
+                        return false;
+                    }
+                    else {
+                        const validPassChars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B",
+                            "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "!", "(", ")", "?", "{", "}", "[",
+                            , "]", "_", "`", "~", "!", "@", "#", "$", "%", "^", "&", "*", "+", "=", "-", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "."];
+                        const invalidAtFront = ["-", "."];
+
+                        for (let i = 0; i < invalidAtFront.length; i++) {
+                            if (password.charAt(0) == invalidAtFront[i]) {
+                                document.getElementById("txtHintLogin").innerHTML = "Please enter a valid username or password.";
+                                return false;
+                            }
+
+                        }
+
+
+                        for (let i = 0; i < password.length; i++) {
+                            let contains = false;
+                            for (let j = 0; j < validPassChars.length; j++) {
+                                if (password.charAt(i) == validPassChars[j]) {
+                                    contains = true;
+                                    break;
+                                }
+                            }
+                            if (contains == false) {
+                                document.getElementById("txtHintLogin").innerHTML = "Please enter a valid username or password.";
+                                return false;
+                            }
+                        }
+
+                        const validEmailChars = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B",
+                            "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "_", ".", "-", "@"];
+                        const specialEmailChars = ["_", ".", "-"];
+                        let count = 0;
+                        let index = 0;
+                        for (let i = 0; i < email.length; i++) {
+                            if (email.charAt(i) == '@')
+                            {
+                                index = i;
+                                count = count + 1;
+                            }
+                        }
+
+                        if (count != 1) {
+                            document.getElementById("txtHintLogin").innerHTML = "Please enter a valid username or password.";
+                            return false;
+                        }
+                        for (let i = 0; i < specialEmailChars.length; i++) {
+                            if (email.endsWith(specialEmailChars[i])) {
+                                document.getElementById("txtHintLogin").innerHTML = "Please enter a valid username or password.";
+                                return false;
+                            }
+                            if (email.at(index - 1) == specialEmailChars[i]) {
+                                document.getElementById("txtHintLogin").innerHTML = "Please enter a valid username or password.";
+                                return false;
+                            }
+                        }
+
+                        for (let i = 0; i < email.length; i++) {
+                            let contains = false;
+                            for (let j = 0; j < validEmailChars.length; j++) {
+                                console.log(j);
+                                if (email.charAt(i) == validEmailChars[j]) {
+                                    contains = true;
+                                    console.log("Checking " + email.charAt(i) + validEmailChars[j]);
+                                    break;
+                                }
+                            }
+                            if (contains == false) {
+                                document.getElementById("txtHintLogin").innerHTML = "Please enter a valid username or password.";
+                                console.log("Failed at " + email.charAt(i));
+                                return false;
+                            }
+                        }
+
+                        for (let i = 0; i < email.length; i++)
+                        {
+                            if (email.charAt(i) == '.') {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
                 }
+
             </script>
             <a href="#signUpPage"><button>Sign Up</button></a>
             <!-- DISPLAYS ANY NEEDED OUTPUT SUCH AS INVALID LOGIN           -->
@@ -248,7 +334,7 @@
 
                 function passwordMatch(pass1, pass2) {
                     if (pass1 === pass2) {
-                        //successful login
+                        //successful registration
                         console.log("passwords match");
                         document.getElementById("txtHintRegister").innerHTML = "";
                     }
